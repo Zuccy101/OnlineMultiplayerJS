@@ -1,30 +1,33 @@
 
 let grid = [];
 
-function Box(id, posx, posy, vecx, vecy) {
+class Box {
+  constructor(id, posx, posy, vecx, vecy) {
+
+    this.id = id;
+    this.x = posx;
+    this.y = posy;
+    this.vec = createVector(vecx, vecy);
+    this.wh = 100;
   
-  this.id = id;
-  this.x = posx;
-  this.y = posy;
-  this.vec = createVector(vecx, vecy);
-  this.wh = 100;
+    this.dx = this.x + (this.wh * this.vec.x) + width/3
+    this.dy = this.y + (this.wh * this.vec.y) + height/3
 
-  this.dx = this.x + (this.wh * this.vec.x) + width/3
-  this.dy = this.y + (this.wh * this.vec.y) + height/3
+  }
 
-  this.render = function() {
+  render() {
     fill(255)
     rect(this.dx, this.dy, this.wh, this.wh)
   }
 
-  this.hover = function() {
+  hover() {
     return(
       mouseX > this.dx && mouseX < this.dx + this.wh &&
       mouseY > this.dy && mouseY < this.dy + this.wh
     )
   }
 
-  this.update = function() {
+  update() {
 
     if (this.id == 1) {
       image(

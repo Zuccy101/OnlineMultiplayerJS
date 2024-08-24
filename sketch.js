@@ -42,7 +42,7 @@ function setup() {
     .size(100, 50)
     .style('font-size', '24px')
     .mousePressed(() => {
-      joinRoom(host.value())
+      joinRoom(join.value())
     })
   
   setupGrid()
