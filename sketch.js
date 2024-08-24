@@ -19,14 +19,14 @@ function changeColor() {
     if (isHost) {
         button.style('background-color', 'blue');
         // Send the button state to the other player
-        if (connection) {
+        if (connection && connection.open) {
             connection.send({ color: 'blue' });
             console.log("color blue sent!")
         }
     } else {
         button.style('background-color', 'red');
         // Send the button state to the host
-        if (connection) {
+        if (connection && connection.open) {
             connection.send({ color: 'red' });
             console.log("color red sent!")
         }
