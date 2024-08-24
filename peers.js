@@ -15,9 +15,17 @@ function initializeHost() {
   });
 }
 
+function initializeClient() {
+  peer = new Peer(); // Create a new peer with a random ID
+  peer.on('open', function (id) {
+      console.log('Client ID: ' + id);
+      isHost = false;
+  });
+}
+
 // Function to join a room as a client
 function joinRoom(hostId) {
-  peer = new Peer(); // Create a new peer
+  //peer = new Peer(); // Create a new peer
   connection = peer.connect(hostId); // Connect to the host
   connection.on('open', function () {
       console.log('Connected to host');
