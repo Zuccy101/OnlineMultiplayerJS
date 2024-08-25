@@ -84,7 +84,7 @@ function draw() {
                 currBox.id = 1;
                 //grid[currBox.vec.x][currBox.vec.y] = currBox
                 if (connection && connection.open) {
-                  connection.send({ obj: "obj" });
+                  connection.send({ id: currBox.id });
                 }
                 print("cross in " + currBox.vec.x + currBox.vec.y)
               }
@@ -94,7 +94,7 @@ function draw() {
                 currBox.id = 2;
                 //grid[currBox.vec.x][currBox.vec.y] = currBox
                 if (connection && connection.open) {
-                  connection.send({ obj: "obj" });
+                  connection.send({ id: currBox.id });
                 }
                 print("circle in " + currBox.vec.x + currBox.vec.y)
               }
@@ -117,6 +117,24 @@ function draw() {
       }
     }
   }
+}
+
+function checkWinner() {
+  for (let i = 0; i < winningCombinations.length; i++) {
+    const [a, b, c] = winningCombinations[i];
+    const boxA = grid[a[0]][a[1]];
+    const boxB = grid[b[0]][b[1]];
+    const boxC = grid[c[0]][c[1]];
+
+    if (boxA.id !== 0 && boxA.id === boxB.id && boxA.id === boxC.id) {
+      // We have a winner
+      return {
+        player: boxA.id,
+        combination: [boxA, boxB, boxC]
+      }; // Return the id of the winning player (1 for cross, 2 for circle)
+    }
+  }
+  return null; // No winner yet
 }
 
 function copyToClipboard(str) {
