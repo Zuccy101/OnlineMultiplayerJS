@@ -1,8 +1,10 @@
 
 // Function to initialize PeerJS for the host
 function initializeHost() {
+  clientid.html("");
   peer = new Peer(); // Create a new peer with a random ID
   peer.on('open', function (id) {
+    hostid.html(id);
     console.log('Host ID: ' + id);
     isHost = true;
   });
@@ -16,8 +18,10 @@ function initializeHost() {
 }
 
 function initializeClient() {
+  hostid.html("");
   peer = new Peer(); // Create a new peer with a random ID
   peer.on('open', function (id) {
+    clientid.html(id);
     console.log('Client ID: ' + id);
     isHost = false;
   });

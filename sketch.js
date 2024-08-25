@@ -1,4 +1,4 @@
-let reset, join, client, host, submit;
+let reset, join, client, host, submit, hostid, clientid;
 let isHost = false; // Whether this client is the host
 let peer, connection;
 
@@ -11,7 +11,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(1080, 720);
 
   reset = createButton("restart")
     .position(150, 180)
@@ -31,19 +31,35 @@ function setup() {
     .style('font-size', '24px')
     .mousePressed(initializeClient)
 
-  join = createInput("paste host id here")
-    .position(500, 60)
-    .size(200, 50)
-    .style('font-size', '24px')
-
-
-  submit = createButton("submit")
+    submit = createButton("submit")
     .position(900, 180)
     .size(100, 50)
     .style('font-size', '24px')
     .mousePressed(() => {
       joinRoom(join.value())
     })
+
+    join = createInput("paste host id here")
+      .position(425, 30)
+      .size(200, 25)
+      .style('font-size', '16px')
+
+    hostid = createButton("")
+      .position(100, 120)
+      .size(200, 40)
+      .style('font-size', '16px')
+      .mousePressed(() => {
+        copyToClipboard(hostid.html());
+      });
+
+    clientid = createButton("")
+      .position(850, 120)
+      .size(200, 40)
+      .style('font-size', '16px')
+      .mousePressed(() => {
+        copyToClipboard(clientid.html());
+      });
+
   
   setupGrid()
 }
@@ -84,14 +100,13 @@ function draw() {
               }
             }
 
-            let winner = checkWinner();
-            if (winner) {
-              print("Player " + winner + " wins!");
+            let result = checkWinner();
+            if (result) {
+              print("Player " + result.player + " wins!");
 
-              for (let rows of grid) {
-                for (let box of rows) {
-                  box.fill = "#be2665";
-                }
+              // Highlight the winning combination
+              for (let box of result.combination) {
+                box.fill = "#be2665";
               }
 
               winner = false;
@@ -102,4 +117,15 @@ function draw() {
       }
     }
   }
+}
+
+function copyToClipboard(str) {
+
+  navigator.clipboard.writeText(str)
+    .then(() => {
+      console.log('ID copied to clipboard ' + str);
+    })
+    .catch(err => {
+      console.error('Failed to copy ID: ', err);
+    });
 }

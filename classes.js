@@ -72,7 +72,10 @@ function checkWinner() {
 
     if (boxA.id !== 0 && boxA.id === boxB.id && boxA.id === boxC.id) {
       // We have a winner
-      return boxA.id; // Return the id of the winning player (1 for cross, 2 for circle)
+      return {
+        player: boxA.id,
+        combination: [boxA, boxB, boxC]
+      }; // Return the id of the winning player (1 for cross, 2 for circle)
     }
   }
   return null; // No winner yet
