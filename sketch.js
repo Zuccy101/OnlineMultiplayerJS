@@ -11,7 +11,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1280, 720);
+  createCanvas(windowWidth, windowHeight);
 
   reset = createButton("restart")
     .position(150, 180)
@@ -49,14 +49,13 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  background("#1d1e31");
 
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
       let currBox = grid[i][j]
   
       currBox.render();
-      currBox.update();
       
       if (currBox.hover()) {
         //print("hovering " + currBox.vec.x + currBox.vec.y)
@@ -67,6 +66,7 @@ function draw() {
             if (isHost) {
               if (currBox.id !== 1 ) {
                 currBox.id = 1;
+                //grid[currBox.vec.x][currBox.vec.y] = currBox
                 if (connection && connection.open) {
                   connection.send({ obj: currBox });
                 }
@@ -76,11 +76,26 @@ function draw() {
             else {
               if (currBox.id !== 2) {
                 currBox.id = 2;
+                //grid[currBox.vec.x][currBox.vec.y] = currBox
                 if (connection && connection.open) {
                   connection.send({ obj: currBox });
                 }
                 print("circle in " + currBox.vec.x + currBox.vec.y)
               }
+            }
+
+            let winner = checkWinner();
+            if (winner) {
+              print("Player " + winner + " wins!");
+
+              for (let rows of grid) {
+                for (let box of rows) {
+                  box.fill = "#be2665";
+                }
+              }
+
+              winner = false;
+              setTimeout(setupGrid, 1000)
             }
           }
         }

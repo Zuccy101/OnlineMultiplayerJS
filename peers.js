@@ -35,10 +35,12 @@ function joinRoom(hostId) {
 
 // Function to handle incoming data from the connection
 function handleConnection() {
+
   connection.on('data', function (data) {
     console.log('Received:', data);
-    if (data.obj) {
-      grid[data.obj.vec.x][data.obj.vec.y] = data.obj
+    if (data) {
+      grid[data.vec.x][data.vec.y] = data;
     }
   });
+
 }
