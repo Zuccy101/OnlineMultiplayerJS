@@ -43,7 +43,8 @@ function handleConnection() {
   connection.on('data', function (data) {
     console.log('Received:', data);
     if (data) {
-      grid[data.vec.x][data.vec.y] = data;
+      console.log(data) 
+      //grid[data.vec.x][data.vec.y] = data;
     }
   });
 

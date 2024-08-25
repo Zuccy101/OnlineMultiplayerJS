@@ -84,7 +84,7 @@ function draw() {
                 currBox.id = 1;
                 //grid[currBox.vec.x][currBox.vec.y] = currBox
                 if (connection && connection.open) {
-                  connection.send({ obj: currBox });
+                  connection.send({ obj: "obj" });
                 }
                 print("cross in " + currBox.vec.x + currBox.vec.y)
               }
@@ -94,7 +94,7 @@ function draw() {
                 currBox.id = 2;
                 //grid[currBox.vec.x][currBox.vec.y] = currBox
                 if (connection && connection.open) {
-                  connection.send({ obj: currBox });
+                  connection.send({ obj: "obj" });
                 }
                 print("circle in " + currBox.vec.x + currBox.vec.y)
               }
