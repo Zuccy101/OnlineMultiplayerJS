@@ -44,7 +44,7 @@ function handleConnection() {
     console.log('Received:', data);
     if (data) {
       console.log(data) 
-      //grid[data.vec.x][data.vec.y] = data;
+      grid[data.vec.x][data.vec.y].id = data.id;
     }
   });
 
