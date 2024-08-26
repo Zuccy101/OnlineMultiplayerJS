@@ -43,8 +43,10 @@ function handleConnection() {
   connection.on('data', function (data) {
     console.log('Received:', data);
     if (data) {
-      console.log(data) 
-      grid[data.vec.x][data.vec.y].id = data.id;
+      //console.log(data) 
+      grid[data.vecx][data.vecy].id = data.id;
+
+      validateWinner();
     }
   });
 
