@@ -1,3 +1,5 @@
+let maxPlayers = 2;
+let connectedPlayers = 0;
 
 // Function to initialize PeerJS for the host
 function initializeHost() {
@@ -11,9 +13,29 @@ function initializeHost() {
 
   // Wait for a connection from a client
   peer.on('connection', function (conn) {
-    connection = conn;
-    console.log('Client connected');
-    handleConnection();
+
+    if (connectedPlayers < maxPlayers) {
+      connectedPlayers++;
+      connection = conn;
+      console.log('Client connected');
+      handleConnection(conn);
+
+      conn.on('close', function () {
+        connectedPlayers--;
+        showConnectionStatus('Client disconnected');
+        console.log('Client disconnected');
+        connection.send({ err: "Disconnected from host" })
+        setupGrid();
+      });
+    } 
+    else {
+      console.log('Game is full, rejecting connection');
+      conn.close(); // Reject additional connections
+    }
+
+  });
+
+  peer.on('connection', function (conn) {
   });
 }
 
@@ -29,25 +51,55 @@ function initializeClient() {
 
 // Function to join a room as a client
 function joinRoom(hostId) {
-  //peer = new Peer(); // Create a new peer
   connection = peer.connect(hostId); // Connect to the host
   connection.on('open', function () {
+    showConnectionStatus('Connected to host');
     console.log('Connected to host');
     handleConnection();
   });
+
+  connection.on('close', function () {
+    console.log('Disconnected from host');
+    connection.send({ err: "Client disconnected" })
+    // Handle host disconnection (e.g., notify the player, attempt to reconnect)
+    setupGrid();
+  });
 }
 
-// Function to handle incoming data from the connection
-function handleConnection() {
-
-  connection.on('data', function (data) {
-    console.log('Received:', data);
-    if (data) {
-      //console.log(data) 
+function handleConnection(conn) {
+  conn.on('data', function (data) {
+    if (isValidMove(data)) {
+      console.log(data);
       grid[data.vecx][data.vecy].id = data.id;
-
       validateWinner();
+      turn = data.turn;
+    } 
+    else {
+      console.error('Invalid move received:', data);
     }
   });
+}
 
+function isValidMove(data) {
+  let expectedTurn;
+  if (turn == 0) {
+    expectedTurn = 1;
+  } 
+  else if (turn == 1) {
+    expectedTurn = 0;
+  }
+
+  return (
+    data.vecx >= 0 && 
+    data.vecx < 3 && 
+    data.vecy >= 0 && 
+    data.vecy < 3 && 
+    grid[data.vecx][data.vecy].id === 0 &&
+    data.turn == expectedTurn
+  );
+}
+
+function showConnectionStatus(status) {
+  const statusElement = document.getElementById('connectionStatus');
+  statusElement.innerText = status;
 }

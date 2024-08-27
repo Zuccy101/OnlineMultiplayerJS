@@ -1,5 +1,6 @@
 let reset, join, client, host, submit, hostid, clientid;
-let isHost = false; // Whether this client is the host
+let isHost = false;
+let turn = 0;
 let peer, connection;
 
 let circle;
@@ -74,30 +75,45 @@ function draw() {
       currBox.render();
       
       if (currBox.hover()) {
-        //print("hovering " + currBox.vec.x + currBox.vec.y)
   
         if (mouseIsPressed) {
           if (currBox.id == 0) {
   
             if (isHost) {
-              if (currBox.id !== 1 ) {
-                currBox.id = 1;
-                //grid[currBox.vec.x][currBox.vec.y] = currBox
-                if (connection && connection.open) {
-                  connection.send({ id: currBox.id, vecx: currBox.vec.x, vecy: currBox.vec.y });
+              if (turn == 1) {
+                if (currBox.id !== 1 ) {
+                  currBox.id = 1;
+  
+                  if (connection && connection.open) {
+                    turn = 0;
+                    connection.send({ 
+                      id: currBox.id, 
+                      vecx: currBox.vec.x, 
+                      vecy: currBox.vec.y, 
+                      turn: 0
+                    });
+                  }
+                  print("cross in " + currBox.vec.x + currBox.vec.y)
                 }
-                print("cross in " + currBox.vec.x + currBox.vec.y)
               }
             }
             else {
-              if (currBox.id !== 2) {
-                currBox.id = 2;
-                //grid[currBox.vec.x][currBox.vec.y] = currBox
-                if (connection && connection.open) {
-                  connection.send({ id: currBox.id, vecx: currBox.vec.x, vecy: currBox.vec.y });
+              if (turn == 0) {
+                if (currBox.id !== 2) {
+                  currBox.id = 2;
+                  if (connection && connection.open) {
+                    turn = 1;
+                    connection.send({ 
+                      id: currBox.id, 
+                      vecx: currBox.vec.x, 
+                      vecy: currBox.vec.y, 
+                      turn: 1
+                    });
+                  }
+                  print("circle in " + currBox.vec.x + currBox.vec.y)
                 }
-                print("circle in " + currBox.vec.x + currBox.vec.y)
               }
+
             }
 
             validateWinner();
