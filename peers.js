@@ -1,4 +1,4 @@
-let maxPlayers = 2;
+let maxPlayers = 1;
 let connectedPlayers = 0;
 
 // Function to initialize PeerJS for the host
@@ -22,14 +22,13 @@ function initializeHost() {
 
       conn.on('close', function () {
         connectedPlayers--;
-        showConnectionStatus('Client disconnected');
         console.log('Client disconnected');
-        connection.send({ err: "Disconnected from host" })
+        //connection.send({ err: "Disconnected from host" })
         setupGrid();
       });
     } 
     else {
-      console.log('Game is full, rejecting connection');
+      console.log('Game is full, 1 connection rejected');
       conn.close(); // Reject additional connections
     }
 
@@ -53,21 +52,20 @@ function initializeClient() {
 function joinRoom(hostId) {
   connection = peer.connect(hostId); // Connect to the host
   connection.on('open', function () {
-    showConnectionStatus('Connected to host');
     console.log('Connected to host');
     handleConnection();
   });
 
   connection.on('close', function () {
     console.log('Disconnected from host');
-    connection.send({ err: "Client disconnected" })
+    //connection.send({ err: "Client disconnected" })
     // Handle host disconnection (e.g., notify the player, attempt to reconnect)
     setupGrid();
   });
 }
 
 function handleConnection(conn) {
-  conn.on('data', function (data) {
+  connection.on('data', function (data) {
     if (isValidMove(data)) {
       console.log(data);
       grid[data.vecx][data.vecy].id = data.id;
@@ -97,9 +95,4 @@ function isValidMove(data) {
     grid[data.vecx][data.vecy].id === 0 &&
     data.turn == expectedTurn
   );
-}
-
-function showConnectionStatus(status) {
-  const statusElement = document.getElementById('connectionStatus');
-  statusElement.innerText = status;
 }
