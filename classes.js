@@ -61,6 +61,14 @@ class Box {
       mouseY > this.dy && mouseY < this.dy + this.wh
     )
   }
+
+  serialize() {
+    return{
+      id: this.id,
+      vecx: this.vec.x,
+      vecy: this.vec.y,
+    }
+  }
 }
 
 function setupGrid() {

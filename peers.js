@@ -68,7 +68,7 @@ function handleConnection(conn) {
   connection.on('data', function (data) {
     if (isValidMove(data)) {
       console.log(data);
-      grid[data.vecx][data.vecy].id = data.id;
+      grid[data.box.vecx][data.box.vecy].id = data.box.id;
       validateWinner();
       turn = data.turn;
     } 
@@ -88,11 +88,11 @@ function isValidMove(data) {
   }
 
   return (
-    data.vecx >= 0 && 
-    data.vecx < 3 && 
-    data.vecy >= 0 && 
-    data.vecy < 3 && 
-    grid[data.vecx][data.vecy].id === 0 &&
+    data.box.vecx >= 0 && 
+    data.box.vecx < 3 && 
+    data.box.vecy >= 0 && 
+    data.box.vecy < 3 && 
+    grid[data.box.vecx][data.box.vecy].id === 0 &&
     data.turn == expectedTurn
   );
 }
