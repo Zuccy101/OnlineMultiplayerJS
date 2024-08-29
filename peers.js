@@ -17,11 +17,13 @@ function initializeHost() {
     if (connectedPlayers < maxPlayers) {
       connectedPlayers++;
       connection = conn;
+      state = "Match started! Client goes first";
       console.log('Client connected');
       handleConnection(conn);
 
       conn.on('close', function () {
         connectedPlayers--;
+        state = "Waiting for match to start...";
         console.log('Client disconnected');
         //connection.send({ err: "Disconnected from host" })
         setupGrid();
@@ -52,6 +54,7 @@ function initializeClient() {
 function joinRoom(hostId) {
   connection = peer.connect(hostId); // Connect to the host
   connection.on('open', function () {
+    state = "Match started! Client goes first";
     console.log('Connected to host');
     handleConnection();
   });
@@ -59,7 +62,7 @@ function joinRoom(hostId) {
   connection.on('close', function () {
     console.log('Disconnected from host');
     //connection.send({ err: "Client disconnected" })
-    // Handle host disconnection (e.g., notify the player, attempt to reconnect)
+    state = "Waiting for match to start...";
     setupGrid();
   });
 }

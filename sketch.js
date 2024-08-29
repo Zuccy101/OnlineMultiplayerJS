@@ -1,4 +1,4 @@
-let reset, join, client, host, submit, hostid, clientid;
+let reset, join, client, host, submit, hostid, clientid, state;
 let isHost = false;
 let turn = 0;
 let peer, connection;
@@ -13,6 +13,8 @@ function preload() {
 
 function setup() {
   createCanvas(1080, 720);
+
+  state = "Waiting for match to start...";
 
   reset = createButton("restart")
     .position(150, 180)
@@ -67,6 +69,9 @@ function setup() {
 
 function draw() {
   background("#1d1e31");
+
+  textAlign(CENTER, CENTER)
+  text(state, width / 2, height / 3)
 
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
