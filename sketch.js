@@ -70,8 +70,9 @@ function setup() {
 function draw() {
   background("#1d1e31");
 
+  textSize(28)
   textAlign(CENTER, CENTER)
-  text(state, width / 2, height / 3)
+  text(state, width / 2, 160)
 
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
