@@ -92,7 +92,7 @@ function draw() {
                       vecy: currBox.vec.y, 
                       turn: 0
                     });*/
-                    connection.send({ box: currBox.serialize(), turn: 0 });
+                    connection.send({ box: currBox.serialize(), turn: turn });
                   }
                   print("cross in " + currBox.vec.x + currBox.vec.y)
                 }
@@ -104,12 +104,13 @@ function draw() {
                   currBox.id = 2;
                   if (connection && connection.open) {
                     turn = 1;
-                    connection.send({ 
+                    /*connection.send({ 
                       id: currBox.id, 
                       vecx: currBox.vec.x, 
                       vecy: currBox.vec.y, 
                       turn: 1
-                    });
+                    });*/
+                    connection.send({ box: currBox.serialize(), turn: turn })
                   }
                   print("circle in " + currBox.vec.x + currBox.vec.y)
                 }
