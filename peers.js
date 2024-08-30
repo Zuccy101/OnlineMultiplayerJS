@@ -4,7 +4,7 @@ let connectedPlayers = 0;
 // Function to initialize PeerJS for the host
 function initializeHost() {
   clientid.html("");
-  peer = new Peer(); // Create a new peer with a random ID
+  peer = new Peer(1234); // Create a new peer with a random ID
   peer.on('open', function (id) {
     hostid.html(id);
     console.log('Host ID: ' + id);
@@ -19,7 +19,7 @@ function initializeHost() {
       connection = conn;
       state = "Match started! Client goes first";
       console.log('Client connected');
-      handleConnection(conn);
+      handleConnection();
 
       conn.on('close', function () {
         connectedPlayers--;
@@ -67,7 +67,7 @@ function joinRoom(hostId) {
   });
 }
 
-function handleConnection(conn) {
+function handleConnection() {
   connection.on('data', function (data) {
     if (isValidMove(data)) {
       console.log(data);
